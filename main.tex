@@ -1,0 +1,1246 @@
+\documentclass{article}
+
+% Paquete de idioma
+\usepackage[spanish,activeacute,es-tabla]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{graphicx}
+% Paquete de enlaces
+\usepackage{hyperref}
+\usepackage{pgf}
+
+% Ignora esta parte, es para meter el código python bonito
+\usepackage{tcolorbox}
+\tcbuselibrary{minted,breakable,xparse,skins}
+
+\definecolor{bg}{gray}{0.95}
+\DeclareTCBListing{mintedbox}{O{}m!O{}}{%
+  breakable=true,
+  listing engine=minted,
+  listing only,
+  minted language=#2,
+  minted style=default,
+  minted options={%
+    linenos,
+    gobble=0,
+    breaklines=true,
+    breakafter=,,
+    fontsize=\small,
+    numbersep=8pt,
+    #1},
+  boxsep=0pt,
+  left skip=0pt,
+  right skip=0pt,
+  left=25pt,
+  right=0pt,
+  top=3pt,
+  bottom=3pt,
+  arc=5pt,
+  leftrule=0pt,
+  rightrule=0pt,
+  bottomrule=2pt,
+  toprule=2pt,
+  colback=bg,
+  colframe=black!70,
+  enhanced,
+  overlay3··························qq·qq···qq··33}
+\title{Primera Edición del curso de Python (Borrador)}
+\date{\today}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \vspace{20mm}
+    \pgfimage[width=7cm]{python_portada.png}
+    \vspace{20mm}
+    
+    \begin{tabular}{cc}
+        Diego Rodríguez Atencia
+    \end{tabular}
+\end{center}
+
+\newpage
+\tableofcontents
+% Cambiar espacio entre parrafos
+\setlength{\parskip}{4mm}
+
+\newpage
+\section{Agradecimientos}
+
+Principalmente, esto no sería posible si no tuviésemos a gente tan capaz y motivada en la asociación, ... Para empezar me gustaría agradecer a \href{https://www.linkedin.com/in/ericmorag/}{Eric Morales Agostinho}, por haberme ayudado con la sintaxis de \LaTeX (todas las cajitas de código que vais a ver son gracias a él. Yo pensaba en copiar y pegar trozos de imágenes para explicar el código, pero de esa manera quizás no estarías leyendo esto ahora). También a \href{mailto:luissanchezpolo15@gmail.com}{Luis Sánchez Polo}, por la motivación que nos ha dado a todos a mover este curso y sacarlo adelante.No puedo olvidarme del equipo de corrección, que tan pacientemente fué por todo este curso corrigiendo todas las fallas: Juanjosé Romero, Jorge Sánchez, Luis Sánchez y de nuevo Eric Morales. Por último, especiales agradecimientos a todos aquellos que están haciend5o que esta asociación crezca y madure como punto de encuentro de estudiantes ¡Gracias!
+
+\section{Introducción}
+Hoy en día, en plena era del big data, cada vez son más importantes las técnicas de aprendizaje automático, ante esta cantidad descomunal y creciente de nuevos datos. Para ello, cualquier analista de datos, o ingeniero de datos, o desarrollador de inteligencia artificial tiene que ir armado de muchas habilidades, como SQL, Excel, Apache,... pero por encima de todo el lenguaje de programación \textbf{Python}.
+
+
+\textbf{Python} es un lenguaje \textit{open source}, lo que quiere decir que básicamente ¡Es gratis! El lenguaje Python sigue en continuidad al lenguaje ABC, y fué desarrollado al principio como pasatiempo. Es un lenguaje de alto nivel, lo que quiere decir que los humanos podemos entenderlo bien. Está basado en \textbf{C}, que es otro lenguaje de programación, pero de bajo nivel (es decir, la máquina lo entiende mejor que Python).
+
+
+Hoy en día, Python se utiliza para casi cualquier cosa, desde el ámbito programación web, hasta ciberseguridad, pasando por la estadística y el análisis numérico.
+Sin más dilación, os contamos los objetivos que pretende alcanzar este objetivo:
+
+\begin{itemize}
+    \item Que consigáis una base fuerte de Python para usarlo cómodamente para programas sencillos.
+    \item Conseguir cierto conocimiento de las bases de la programación y desarrollar vuestra forma de pensar.
+    \item Que consigáis romper el hielo en una de las habilidades más demandadas hoy en día ¡La programación!
+\end{itemize}
+
+Las siguientes hojas las podéis usar para ir mirando el contenido, y repasar las lecciones. Cada sábado por la mañana, explicaremos brevemente el concepto a aprender ese día, y pasaremos a realizar ejercicios para afianzarlo.
+\subsection{Aclaración}
+En este curso, usaremos \textbf{Google Colabs} debido a que permiten una ejecución de código mucho más visual y amable, en contraste con algún IDE (Integral Development Environment, un programa con un editor de texto con algunas aplicaciones útiles para el desarrollo de programas) o editor de texto. Sin embargo, después de este curso, a no ser que quieras adentrarte en el mundo de la ciencia de datos, deberías usar un IDE. Mi consejo es que busques uno que te guste, y aprendas las cosas que puedes hacer con él. Si prefieres algo más rápido, siempre puedes usar la consola de comandos directamente desde la terminal, que es lo que hago yo personalmente para hacer experimentos rápidos ¡Ya depende de ti! Por tanto, sírvete de usar los \textbf{Google colabs} que he preparado para que practiques los conceptos, pero entiende que hay cosas más allá de esto que te facilitarán la vida mucho más. 
+\subsection{Contacto}
+Ante cualquier errata, podéis comentárnoslo a \href{mailto:cdi.asociacion.ciencias@uam.es}{cdi.asociacion.ciencias@uam.es} 
+\section{Extra: Instalación de Python}
+Para este curso no vamos a necesitar esta sección (que además es muy sencilla) por lo que sírvete de saltarla si no quieres seguirla. Aprenderás a instalar y correr Python en tu ordenador.
+
+
+\subsection{Instalación para Windows o MAC}
+Para instalar Python en Windows, sigue los siguientes pasos:
+\begin{enumerate}
+    \item Ve a la página web oficial de Python: \href{https://www.python.org/}{link}
+    \item Descarga y ejecuta el archivo (puedes descargar la última versión, pero como veremos más adelante, podría interesarte descargar una versión diferente a la última. Por ahora no importa cual descarges, siempre que sea 3.x.x)
+    \item Sigue los pasos de la instalación: ve pulsando next y elige el directorio de instalación.
+    \item ¡Bravo! Ya tienes Python instalado. Ve a la consola de comandos escribiendo cmd en el buscador, y escribe python. Si te sale el intérprete de Python, significa que ya lo tienes correctamente instalado.
+\end{enumerate}
+\subsection{Instalación para Linux}
+Como Python ya se encuentra automáticamente instalado en Linux, no es necesario que lo instales. Simplemente abre una consola de comandos, y escribe ``python3''. Si se abre una sesión interactiva con el intérprete de comandos, significa que todo ha ido bien.
+\section{Hola mundo}
+
+\subsection{\textit{Setup} del entorno de programación}
+En esta semana, veremos la herramienta que usaremos para aprender Python, \textbf{Google Colab}. Esta es una plataforma gratuita ofrecida por Google que nos va a permitir ejecutar el código de Python por celdas. Primero, abre el siguiente link: 
+\url{https://colab.research.google.com/drive/1dRsmRFGOCjisxwzP54CpBXFyGunCyW_c?usp=sharing}
+
+En el que encontrarás la práctica de esta semana. Esta es un poco de toma de contacto, para que vayas viendo como es la lógica de la programación.
+
+\section{Tipos de datos}
+
+A nada que te metes un poco en faena y quieres programar cosas complicadas, te das cuenta de que necesitas trabajar con diferentes tipos de datos. Si escribes un texto, te gustaría poder trabajar con palabras y caracteres. Si en cambio, estás realizando cálculos numéricos, necesitarás trabajar con números de coma flotante. También podrías querer quedarte nada más con un sí o un no. Este tipo de cosas motiva las clases de datos, un concepto muy útil, y que comparten todos los lenguajes de programación.
+Accede a la práctica de esta semana con este enlace: \url{https://colab.research.google.com/drive/1CBkL_D9fO58OnpgHrGHo5xTWm_MNrzh7?usp=sharing}
+Podemos acceder al tipo de dato de cualquier elemento mediante la instrucción \textit{type()}
+\subsection{La clase \textit{int} y \textit{float}}
+Estas clases son las clases de los números por antonomasia. En la clase \textit{int}, trabajamos con número enteros siempre, a diferencia de la clase \textit{float}, donde trabajaremos con números que tienen decimales. Las operaciones que puedes realizar con ellos son, valga la redundancia, la suma, la multiplicación, división (¡Cuidado con dividir por 0!), el módulo (una operación que si no la conoces, tendremos oportunidad de ver ahora), la resta... Como puedes ver, podemos expresar siempre un \textit{int} como \textit{float}, simplemente poniendo un 0 a la derecha.
+
+Podemos convertir un \textit{int} en \textit{float} y viceversa con los siguientes comandos:
+\begin{mintedbox}{python}
+>>> a = 3.141412
+>>> int(a)
+3
+>>> b = 5
+>>> float(b)
+5.0
+>>> 
+\end{mintedbox}
+\textbf{Nota: } Al convertir un \textit{float} en \textit{int}, recuerda que Python redondeará por debajo el \textit{float} para transformarlo en \textit{int}. Si prefieres redondearlo por arriba, puedes usar la función \textbf{ceil()}.
+Aparte, podemos usar los números complejos en Python. La mayor diferencia es que hay que usar la $j$ como $i$ compleja.
+\begin{mintedbox}{python}
+>>> v = 2 + 3j
+>>> v
+(2+3j)
+>>> type(v)
+<class 'complex'>
+>>> 
+\end{mintedbox}
+\subsection{Los \textit{strings} y operaciones con ellos}
+Los \textit{string} son muy importantes en la informática: permiten la comunicación del programa con el usuario, entre otras cosas.Es importante que seas familiar con su comportamiento, y lo que tienen que ofrecerte. 
+
+Para empezar, ¿que es un \textit{string}? Un \textit{string} no es nada más que un tipo de dato útil para representar secuencias de caracteres, lo que viene a ser, frases, párrafos, palabras, texto... Representaremos los strings siempre encerrados con comillas simples (\lq) o comillas dobles (``). Es preferible usar comillas dobles a comillas simples, pero por ejemplo, si necesitamos expresar comillas dentro del texto, podemos usar las comillas simples dentro de las dobles sin problemas. Para usar las comillas dobles deberemos decirle a Python que no estamos haciendo nada raro mediante el símbolo \textbackslash \textit{Ejemplo}:
+Para expresar el texto ``Las ballenas son ``cetáceos'''' podemos hacer dos cosas:
+\begin{enumerate}
+    \item ``Las ballenas son \lq cetáceos\rq ''
+    \item ``Las ballenas son \textbackslash `` cetáceos \textbackslash ''''
+\end{enumerate}
+Cualquiera de las dos está bien.
+Tenemos diferentes tipos de caracteres (también llamados \textit{char}:
+\begin{itemize}
+    \item Los caracteres alfanuméricos: son las letras del abecedario, y los números.
+    \textit{ejemplo}: ``a'', ``b'', ..., ``1'', ``13'',...
+    \item Los caracteres de salto de línea, tabulación... Estos caracteres se caracterizan por dar forma al texto. Los más importantes son:
+    \begin{itemize}
+        \item \textbackslash n salto de línea
+        \item \textbackslash t tabulación.
+    \end{itemize}
+\end{itemize}
+Hay muchos otros \textit{char}, y formas de codificación de caracteres, pero en lo que respecta a lo que necesitamos hacer, con esto nos basta.
+
+Para empezar, es posible ``sumar'' dos strings. El resultado será la concatenación de las dos palabras, que pasará a ser una. Podemos ver un ejemplo a continuación:
+
+\begin{mintedbox}{python}
+>>> "hola"+"adios"
+'holaadios'
+\end{mintedbox}
+
+No te asustes por lo que acabas de ver. Se trata de la consola de comandos ejecutando Python. Como Python es un interprete, puede ejecutar una línea por separado (a diferencia de C, por ejemplo). Esto la hace especialmente cómoda para realizar pequeños experimentos como éste. Para abrirlo, sólo hace falta escribir CMD en inicio, escribir python en la consola y presionar enter ¡Te recomiendo que lo pruebes con algunos comandos que hemos visto!
+
+Hay muchas otras funciones que permiten hacer muchas cosas con los string. Por ejemplo, la función \textit{replace} permite reemplazar caracteres:
+
+
+\begin{mintedbox}{python}
+>>> a="la cara de la sardina es clara"
+>>> a
+'la cara de la sardina es clara'
+>>> b = a.replace('a', 'e')
+>>> b
+'le cere de le serdine es clere'
+\end{mintedbox}
+ 
+ 
+Hay muchísimas funciones para hacer cosas con \textit{strings}, y lo mejor es mirarse las funciones disponibles para cada necesidad (¡el arte de buscar documentación sobre un lenguaje es crucial en todo programador! Nadie se sabe todas las funciones que existen, y no sirve de mucho más. 
+\subsubsection{Formatear un \textit{string}}
+Hay algo muy importante, por último. En cualquier programa, ten por seguro que vas a necesitar introducir enteros y números dentro de strings. Python proporciona dos métodos distintos:
+\begin{enumerate}
+    \item \textit{string\%(el1, el2, ..., eln)}: con este método, debemos especificar el tipo de dato que queremos introducir en el \textit{string}. A continuación verás dos ejemplos para que veas cómo se puede usar esto:
+    \begin{itemize}
+        \item \begin{mintedbox}{python}
+        >>> 'hola, mi número es el \%d'\%(2212121)
+'hola, mi número es el 2212121'
+        \end{mintedbox} 
+        \item \begin{mintedbox}{python}
+        >>> 'hola, mi nombre es \%s'\%('Javier')
+'hola, mi nombre es Javier'
+        \end{mintedbox}
+        \item \begin{mintedbox}{python}
+        >>> 'una buena aproximación de pi es \%lf'\%(3.1416)
+'una buena aproximación de pi es 3.141600'
+        \end{mintedbox}
+        
+    \end{itemize}
+    Como ves, esta forma de 'formatear' un \textit{string} requiere de que conozcas las abreviaturas de cada tipo. Aquí las tienes resumidas:\begin{itemize}
+        \item \%d para enteros
+        \item \%s para \textit{strings}
+        \item \%lf para números de coma flotante
+    \end{itemize}
+\end{enumerate}
+
+
+
+
+\subsection{La clase \textit{boolean} y la expresión \textit{if}}
+Vale, lo de definir enteros, números decimales y palabras en Python está muy bien... Pero ¿qué pasa si solamente necesitamos un valor binario? Dicho de otra forma ¿Podríamos representar un ``sí'' o ``no'' con un tipo de dato? esto es lo que son los tipos de datos \textit{boolean}. Básicamente, una variable \textit{boolean} solamente puede tomar dos valores, TRUE of FALSE. O $0$ o $1$. O sí o no. En python, podemos asignar a una variable el valor TRUE mediante la siguiente asignación: a=\textit{True}.
+
+
+Python no se queda solamente ahí, si no que aprovecha y extiende este concepto a otras cosas. Por ejemplo, puedes utilizar los valores enteros $1$ y $0$ de la misma forma que usas los valores \textit{True} y \textit{False}
+\subsubsection{Las operaciones de condición}
+En Python tenemos unos operadores que nos permiten comparar expresiones. Imagínate que queremos comprobar si el valor contenido en una variable es $5$. para ello, utilizaremos dos símbolos de $=$, como puedes ver en la siguiente consola:
+
+\begin{mintedbox}{python}
+>>> a = 2 + 3
+>>> a
+5
+>>> a == 5
+True
+\end{mintedbox}
+
+Como puedes observar, este experimento nos ha devuelto el valor \textit{True}, que significa que la igualdad se cumple. Enlazándolo con lo que vimos anteriormente, en este caso $a == a+1$ daría \textit{False}, a diferencia de el operador $=$.
+
+Al igual que nos es posible comparar la igualdad entre cosas, también podemos determinar si un número es mayor que otro, o viceversa.
+
+\begin{mintedbox}{python}
+>>> a = 16
+>>> a > 14
+True
+\end{mintedbox}
+
+\subsection{La condición \textit{if, else}}
+La necesidad de ejecutar piezas de código bajo la condición que se cumpla algo surge naturalmente a nada que avanzas un poquito. En Python tenemos una estructura especial para eso, que llamamos \textit{if}. Para escribirlo, vamos a necesitar abrir un archivo de texto o un editor (luego ejecutar el programa es muy sencillo, solamente tienes que meterte en el directorio donde está y escribir en la consola python programa.py. Veamos cómo es:
+
+\begin{mintedbox}{python}
+if cond:
+    Hacer cosas
+\end{mintedbox}
+
+Entonces, la instrucción Hacer cosas solamente se ejecutará si el valor que hay en cond es $True$. Así de simple. De esta forma, podemos controlar el código que se ejecuta en nuestro programa mediante condiciones \textit{if}.
+
+Veamos un ejemplo:
+
+\begin{mintedbox}{python}
+a = 3
+if a==3:
+    print(a)
+\end{mintedbox}
+
+El resultado de esto, como puedes ver, será el valor de a, que es 3. En cambio:
+\begin{mintedbox}{python}
+a = 4
+if a==3:
+    print(a)
+\end{mintedbox}
+Este programa no imprimirá nada por pantalla. Podríamos necesitar comprobar si no se cumple la condición. En este caso usaremos el bloque \textit{else}
+\begin{mintedbox}{python}
+a = 4
+if a==3:
+    print(a)
+else:
+    print(a)
+
+\end{mintedbox}
+Este programa ya imprimirá el valor de $a$, ya que \textit{else} controla el caso en el que no se cumple la condición. También podemos controlar cuando la condición no se cumple, y se cumple otra.
+
+\section{Estructuras de datos}
+
+
+
+\subsection{\textit{Arrays}}
+Puedes acceder a la práctica de esta semana en el siguiente enlace: \url{https://colab.research.google.com/drive/1i5zsx-StywUZyH67g9bny3OEpoRcooVz?usp=sharing}
+
+Después de definir los tipos de datos, quizás nos gustaría poder juntarlos todos en estructuras y hacer cosas con ellos, como multiplicaciones de vectores, recuento de información, o simplemente tenerlos almacenados de forma compacta. El tipo de estructura más sencillo en este sentido es el \textit{Array}, que es puramente la concatenación de elementos. Después de definir o inicializar un \textit{array}, podemos acceder a sus elementos o añadir elementos de diferentes formas. Por ejemplo, para añadir elementos, podemos hacer lo siguiente:
+
+\begin{mintedbox}{python}
+
+>>> a = []
+>>> a.append(3)
+>>> a
+[3]
+
+\end{mintedbox}
+
+En cambio, si lo que queremos es eliminar un elemento, también tenemos un comando para ello.
+
+\begin{mintedbox}{python}
+>>> a.pop(0)
+3
+>>> a
+[]
+>>> 
+\end{mintedbox}
+
+Ahora mismo miramos qué pinta ese cero en la primera línea del anterior código.
+Podemos acceder a cualquier elemento de la lista por un índice. Para acceder al primer elemento, el índice será 0, para el segundo, 1, y así sucesivamente.
+
+\begin{mintedbox}{python}
+>>> arr = [3, 4, 2, 5]
+>>> arr[0]
+3
+>>> arr[1]
+4
+>>> arr[2]
+2
+>>> arr[3]
+5
+>>>
+\end{mintedbox}
+
+Si nos pasamos con el índice, recibimos un error:
+
+\begin{mintedbox}{python}
+>>> arr[4]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: list index out of range
+>>> 
+
+\end{mintedbox}
+Muchas veces podríamos necesitar generar un array trivial: [0, 1, 2, 3, ..., n-1], que vaya desde el 0 hasta n-1. La razón del n-1 es para que el array tenga exactamente n elementos. Podemos crear este array con el siguiente comando:
+\begin{mintedbox}{python}
+>>> range(5)
+range(0, 5)
+>>> range(5)[0]
+0
+>>> range(5)[3]
+3
+\end{mintedbox}
+
+Este comando será muy útil para crear bucles, como veremos en un capítulo posterior.
+Por último, suele ser útil querer saber cuantos elementos tiene un \textit{Array} para ello tenemos la siguiente instrucción:
+\begin{mintedbox}{python}
+>>> arr
+[3, 4, 2, 5]
+>>> len(arr)
+4
+>>> 
+\end{mintedbox}
+Los \textit{arrays} son prácticamente indispensables en cualquier programa. Es muy importante que te familiarices con ellos cuanto antes, de modo que puedas usarlos con soltura.
+\subsection{Conjuntos}
+Los conjuntos son muy parecidos a los \textit{Arrays}. Lo único que cambia es que en los conjuntos sólo existen elementos distintos de otros. En cambio, en un \textit{array} podemos tener muchos elementos repetidos sin ningún problema. Se enuncian mediante corchetes:
+
+\begin{mintedbox}{python}
+>>> con = {3, 4, 5}
+>>> 
+
+\end{mintedbox}
+Un ejemplo de aplicación podría ser encontrar el número de elementos distintos de un \textit{array}, usando el comando len y el comando \textit{set}: de esta manera, primero conseguimos que sólo puedan haber elementos distintos en el \textit{array}, y luego medimos su longitud:
+
+\begin{mintedbox}{python}
+>> array = [1, 2, 3, 1, 2, 2]
+>> new_array = set(array)
+>> print(new_array)
+{1, 2, 3}
+>> print(len(new_array))
+3
+\end{mintedbox}
+
+En muchas situaciones es más fácil representar una serie de datos como si fuesen un conjunto, de manera que puedas comprobar en un tiempo bueno si algo pertenece al conjunto.
+
+
+En general, te interesa usar conjuntos cuando no quieres elementos repetidos en tu array, y no te importa el orden.
+
+\subsection{Tuplas}
+
+Al igual que las listas y los conjuntos, las tuplas son útiles para almacenar datos en variables. Sin embardo, después de inicializarlas, no se puede modificar su contenido así como con las listas. Si intentamos añadir un objeto nos salta este error:
+
+\begin{mintedbox}{python}
+>>> a = (3, 2, 4)
+>>> a
+(3, 2, 4)
+>>> a[0]
+3
+>>> a.append(8)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'tuple' object has no attribute 'append'
+
+
+\end{mintedbox}
+Y si intentamos modificar un elemento nos salta este otro:
+\begin{mintedbox}{python}
+>>> a[1] = 43
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'tuple' object does not support item assignment
+>>> 
+
+
+\end{mintedbox}
+Las tuplas son útiles cuando tienes información estática o importante que no quieres que cambie, o que no necesitas que cambie. 
+
+\subsection{Tablas bidimensionales y otros tipos de datos}
+Las tablas bidimensionales son el siguiente escalón de los \textit{arrays}. Una tabla bidimensional es simplemente una lista de listas, o listas anidada. Hay librerías que hacen un uso más delicado mediante objetos (matrices) que veremos en la sección de introducción a \textit{numpy}. La forma de construir una tabla con \textit{arrays} es anidando listas en otras listas. Como puedes esperar, se accede a sus elementos indexando de fuera hacia dentro, concretando primero los índices de las listas externas y luego las internas. Esto se hace bastante tedioso a la hora de tener que acceder frecuentemente a los datos de una tabla o tensor(tabla de varias dimensiones), así que librerías como \textit{numpy}, \textit{pandas} o \textit{tensorflow} hacen uso de sintaxis de indexación más cómoda para facilitar la lectura y la escritura de código. 
+\subsection{Los diccionarios}
+Si en vez de usar un índice quieres usar una palabra para acceder a la información, puedes usar un diccionario. Su sintaxis es muy sencilla y su forma de uso evidente, como vas a poder comprobar con el siguiente \textit{script}
+\begin{mintedbox}{python}
+>>> dicc = {'a':3, 'b':2}
+>>> dicc['a']
+3
+
+\end{mintedbox}
+Algunos tipos de archivos, como JSON, están basados en estas estructuras. Aquí vienen algunos métodos interesantes para los diccionarios:
+\begin{itemize}
+    \item \textit{.keys()}: devuelve una lista con las claves del diccionario
+    \item \textit{.items()}: devuelve una lista con tuplas (key, valor) del diccionario. Muy útil para iterar sobre éste.
+    \item \textit{.values()}: devuelve una lista con los valores del diccionario
+\end{itemize}
+\subsection{generadores}
+Los generadores sirven para generar los datos en el tiempo de ejecución. Para construirlo, usaremos la instrucción \textit{yield}.
+\begin{mintedbox}{python}
+def primos():
+    index = 1
+    is_prime = 0
+    while True:
+        for i in range(2, math.sqrt(index)):
+            is_prime = 1
+            if index \% i == 0:
+                is_prime = 0
+        if is_prime:
+            yield index
+            is_prime = 0
+        index = index + 1
+\end{mintedbox}
+Lo que hace \textit{yield} es detener la ejecución de la función en ese punto, lo devuelve, y espera hasta una nueva llamada al generador ¡Ahora podemos usarlo para calcular todos lo primos que quieras!
+\section{Bucles \textit{for} y \textit{while}}
+En esta sección seguimos con una estructura indispensable en Python. Lo bueno que tienen los ordenadores es que podemos hacer que hagan cosas muy rápido muchas veces. Esta habilidad de las computadoras nos permite realizar cálculos impensables para realizar por un humano en vida: desde simulaciones de moléculas, hasta predicciones del mercado de la bolsa en tiempos asombrosos. Los bucles $for$ y $while$ ayudan a explotar esta capacidad de los ordenadores de hacer cosas muy rápido, como veremos a continuación:
+
+\subsection{El bucle \textit{for}}
+
+La estructura del bucle $for$ es realmente sencilla. Solamente consta de un enunciado, y termina con dos puntos. Todo lo que entre dentro del bucle $for$, tendrá una cierta sangría. De otra forma, para Python no está dentro.Para decirle a Python sobre qué debe iterar, le daremos siempre una lista, y llamaremos al elementos de la lista en el que está actualmente de alguna manera, en este caso $i$. Dentro del $for$, nos referiremos al elemento actual de la iteración con el mismo nombre.
+
+\begin{mintedbox}{python}
+>> for i in range(10):
+...     print(i)
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+\end{mintedbox}
+\subsection{El bucle \textit{while}}
+El bucle while es muy similar al for, solo que, en vez de terminar en un número finito de pasos, termina cuando se cumple una determinada condición. Esto es útil cuando no tenemos claro cuantas veces necesitamos que se ejecute nuestro código, como cuando estamos ejecutando un algoritmo numérico y necesitamos un error menor que $0.01$, o incluso cuando estamos jugando a nuestro juego favorito, y el programa tiene que comprobar cada poco tiempo si la vida de nuestro jugador sigue mayor que cero, para decidir si darnos ``game over''. La sintaxis es muy sencilla e intuitiva, como verás a continuación:
+\begin{mintedbox}{python}
+>> x = 0
+>> while x < 10:
+...     print(x)
+...     x = x + 1
+...print("La ejecución ha terminado")
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+La ejecución ha terminado
+\end{mintedbox}
+
+\section{Funciones}
+Accede a la práctica de hoy desde este link:
+\url{https://colab.research.google.com/drive/1mJh-w8UqBjd9uypTVIyDu2oL77a62CNO?usp=sharing}
+
+Muchas veces cuando programamos, nos encontramos con trozos de código que se repiten. Puede ser un mensaje largo que queremos mostrar por pantalla, o todo el proceso de cálculo de una cantidad. Para ello, en vez de copiar y pegar, lo cual se puede hacer pero el código quedará con muchas redundancias y será más difícil de leer, podemos definir funciones que nos ayuden. A diferencia de las funciones que estamos acostumbrado a ver, las funciones en python no son nada más que trozos de código que nos interesa llamar muchas veces (créenos, hay un montón de ejemplos), con el objetivo de llamarlo de forma sencilla. Basta hacer lo siguiente para definir una función:
+\begin{mintedbox}{python}
+>> def mi_funcion(palabra):
+...     print("Hola! quieres una "+palabra+"?")
+...     pass
+... mi_funcion("calabaza")
+Hola! quieres una calabaza?
+\end{mintedbox}
+\subsection{Declaración de funciones en un programa}
+Las funciones son muy útiles para no repetir trozos de programa. Siempre que tengas que escribir el mismo pedazo de código dos veces, será mejor que lo hagas una vez en una función. Son muy útiles en ese sentido. Por ejemplo, podemos hacer una función que calcule el área de un cuadrado. Para definir una función, solamente tienes que empezar con un def. Para definir el valor que devolverá la función, solamente hay que ponerlo después de la instrucción return. Si no queremos devolver ningún valor, tendremos que finalizar la función con un pass.
+\begin{mintedbox}{python}
+>>def mi_funcion(palabra):
+...     return palabra*2
+\end{mintedbox}
+\subsection{Los componentes de una función}
+Los componentes de una función son los atributos, y los valores que devuelve. Ambas cosas son opcionales, por ejemplo:
+\begin{mintedbox}{python}
+>> muestra_5():
+...     print('5')
+...     return 5
+\end{mintedbox}
+La anterior es una función que no coge ningún parámetro, enseña 5 por pantalla y devuelve 5.
+Por otra parte, hay una cosa que conviene remarcar ahora: cuando asignamos un valor a una variable, tenemos que preguntarnos su origen, si tiene relación con otra. Cuando la ``nueva'' variable es solamente una llamada a otra, la asignación se llamará paso por referencia (con la nueva variable no hacemos más que referirnos a una variable ya existente), y cuando sea una variable independiente a las demás, su asignación se llamará paso por valor ¡Imagínate que queremos añadir dinero a nuestra cuenta, pero hacemos paso por referencia y terminamos ingresándolo a otra persona! Pues algo parecido pasa en un programa si no atendemos a este detalle.
+\textit{Variables dentro de una función}
+Las variables dentro de una función pueden ser de tres tipos:
+\begin{itemize}
+    \item \textbf{global}: esta variable está fuera de la función, así que podemos modificarla sin tener que retornarla con \textit{return}. No es recomendable usarlas, ya que dificulta el mantenimiento del código:
+    \begin{mintedbox}{python}
+    >>> x = 5
+>>> def prueba():
+...     global x
+...     print(x)
+...     x = 6
+...     pass
+... 
+>>> prueba()
+5
+>>> print(x)
+6
+>>> 
+
+    \end{mintedbox}
+    \item \textbf{non local}: Si la función en la que se define está contenida dentro de otra función, la función contenedora podrá usar y modificar esta variable. Para que veas, en el siguiente código no logramos imprimir el mensaje que queremos:
+    \newpage
+    \begin{mintedbox}{python}
+    >>> def contenedora():
+...     test  = 1
+...     def comprobar_test():
+...             if test == 1:
+...                     print('test comprobado')
+...             pass
+...     pass
+... 
+>>> contenedora()
+
+    \end{mintedbox}
+    Pero en cambio en este sí:
+    \begin{mintedbox}{python}
+    >>> def contenedora():
+...     test = 1
+...     def comprobar_test():
+...             nonlocal test
+...             if test == 1:
+...                     print('test comprobado')
+...             pass
+...     comprobar_test()
+...     pass
+... 
+>>> contenedora()
+test comprobado
+
+    \end{mintedbox}
+    \item \textbf{local}: este es el tipo de variable en una función por defecto. No puede usarse fuera de la función.
+    
+\end{itemize}
+\subsection{\textit{*args} y \textit{**kwargs}}
+Estos nombres tan raros no tienen ningún misterio. Se tratan de palabras clave que usamos cuando queremos que nuestra función admita un número indefinido de parámetros. Ponte en la situación de que quieres una función que sume n números. Puedes intentarlo así:
+\begin{mintedbox}{python}
+>>> def suma(x, y, z, a):
+...     return x+y+z+a
+... 
+>>> suma(2, 3, 4, 2)
+11
+>>> 
+
+\end{mintedbox}
+Ya tenemos el caso de n = 4 cubierto. Solamente nos queda cubrir los casos  5, 3, 2, 1, 6, 7, 8,... Esto es un rotundo NO. El buen programador es vago, es decir, que tiende a escribir lo menos posible. Para ello tenemos \textit{*args} y \textit{**kwargs}. Uno toma una lista o tupla y el otro toma un diccionario. Veamos con un ejemplo:
+\begin{mintedbox}{python}
+>>> def suma(*args):
+...     sum = 0
+...     for i in args:
+...             sum = sum + i
+...     return sum
+... 
+>>> 
+>>> suma(1, 2, 31)
+34
+>>> 
+
+\end{mintedbox}
+Por tanto, \textit{*args} nos permite introducir una cantidad arbitraria de ellos en una función. Un ejemplo para desempaquetar una lista. Para \textit{**kwargs} (\textit{Keywords arguments})
+\begin{mintedbox}{python}
+>>> def suma_con_keys(**kwargs):
+...     sum = 0
+...     for i, j in kwargs.items():
+...             sum = sum + j
+...             print('hemos usado el elemento {0}'.format(i))
+...     return sum
+... 
+>>> suma_con_keys(a = 3, b = 4, c = 5)
+hemos usado el elemento a
+hemos usado el elemento b
+hemos usado el elemento c
+12
+>>> 
+
+\end{mintedbox}
+Como ves, sigue la misma dinámica.
+\subsection{La función \textit{lambda}}
+¿Necesitas definir una función, pero es tan simple que te da pena escribir todo el código necesario? ¡No te preocupes! Los programadores son gente perezosa, y ya tuvieron el mismo problema. La solución es la función lambda: con ella, puedes definir una función en solamente una línea, como ves en el siguiente ejemplo.
+\begin{mintedbox}{python}
+>> cuadrado = lambda x : x**2
+>> cuadrado(3)
+9
+\end{mintedbox}
+Más limpio y manejable que hacer esto:
+\begin{mintedbox}{python}
+>> def cuadrado(x):
+...     return x**2
+>> cuadrado(3)
+9
+\end{mintedbox}
+\subsection{Otras funciones interesantes}
+\begin{itemize}
+    \item \textit{sorted()}: aplicado a un array, devuelve un array con esos elementos ordenados.
+    \item \textit{filter()}: filtra una lista dada una función.
+    \begin{mintedbox}{python}
+    >>>def es_par(n):   
+    ...    if n \% 2 == 0:  
+            return True
+
+    >>>numeros = [2, 5, 10, 23, 50, 33]
+
+    >>>list(filter(multiple, numeros))
+    [2, 10, 50]
+    \end{mintedbox}
+    \item \textit{map()}: map tiene la misma funcionalidad que filter, con la diferencia de que en vez de filtrar los elementos, aplica una función a cada uno de ellos.
+\end{itemize}
+
+\section{Manejo de errores}
+Link a la práctica de esta semana: \url{https://colab.research.google.com/drive/1xdQXflcsf-9hyuoaHsMf6AxxmZBmzDWt?usp=sharing}
+Cuando terminas de escribir un programa, y quieres correrlo, tienes que hacerlo con la idea de que va a salir mal a la primera ¡Pero no te preocupes! Cuando antes comprendas que los errores son lo que más te va a enseñar, más aprenderás. Por ello, puedes incluso crear tus propios errores, y personalizarlos. Así, en vez de que te digan que lo has hecho mal, ya te lo dices a ti mismo.
+
+\subsection{\textit{Try}/\textit{Except}}
+Se trata de un bloque try/except:
+\begin{mintedbox}{python}
+>>try:
+...     #código que pueda fallar en algún momento, o del que no confíes mucho
+...     x = 4/0
+...except:
+...     print('¡Ha ocurrido un error! :0')
+¡Ha ocurrido un error! :0
+\end{mintedbox}
+
+Esto es muy útil, pero es todavía más útil si tenemos información acerca del error que hemos cometido. En este caso hemos pecado de dividir por 0. Este error viene identificado por el comando \textit{ZeroDivisionError}. Si corremos el código anterior sin usar el bloque try/except:
+\begin{mintedbox}{python}
+>> 4/0
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ZeroDivisionError: division by zero
+\end{mintedbox}
+
+Como ves, Python nos dice exactamente en qué hemos fallado. Ahora no es muy útil, pero en un programa de muchas líneas salva mucho trabajo.
+
+
+\subsection{Tipos de Error}
+Hay unos cuantos tipos de error posibles:(pongo los más comunes e importantes a continuación)
+\begin{itemize}
+    \item \textbf{KeyboardInterrupt}
+    
+    Ocurre cuando paramos el programa con las teclas (cuando quieras, con Ctrl+C).
+    
+    \item \textbf{OSErrir}
+    
+    (Operating System Error) Cuando python no encuentra un archivo, por ejemplo.
+    
+    \item \textbf{OverFlowError}
+    
+    Cuando un número se vuelve demasiado grande (en general, para la clase int, son unos $2^32$).
+    
+    \item \textbf{RunTimeError}
+    
+    Cuando tu programa dura demasiado, Python te avisa con este error.
+    
+    \item \textbf{IndentationError}
+    
+    Este es el error más ``pythonico''. Si navegas un poco en busca de memes sobre Python, puedes tener por seguro encontrarte con varios refiriéndose a este error ¡Mucho cuidado con las sangrías!.
+    
+
+    \item \textbf{SyntaxError} 
+    
+    Este sale cuando escribes mal una expresión en Python, como por ejemplo:
+    \begin{mintedbox}{python}
+        >> print 'hola mundo'
+        SyntaxError: Missing parentheses in call to 'print'. Did you mean print("hola mundo")? 
+    \end{mintedbox}
+    
+    \item \textbf{TypeError} 
+    
+    Este es el tipo de error que nos sale cuando queremos sumar un entero con una palabra.
+    
+    \item \textbf{AssertionError}
+    
+    Resulta, que con el comando \textit{assert} podemos enunciar un enunciado, y si no es cierto, parar el programa y devolver un error:
+    \begin{mintedbox}{python}
+>> assert 5 == 3
+>> print('5 es igual a 3')
+AssertionError
+    \end{mintedbox}
+\end{itemize}
+
+En el bloque \textit{try/except}, también podemos incluir más cosas: podemos exigir que con el comando \textit{finally} se ejecute pase lo que pase una parte del código. Muy útil si no queremos que se detenga todo el programa en una sola cosa.
+\subsection{La sentencia \textit{raise}}
+Aunque parezca inútil, en Python existe una forma de crear tus propios errores. Puedes usarlos por ejemplo, para crear una aplicación: si es una billetera, te interesaría que tu usuarios no pudiesen introducir  dinero negativo, ya que entonces tu aplicación les debería dinero. Un ejemplo es el siguiente:
+\begin{mintedbox}{python}
+>>> dinero = input('Introduce una cantidad: ')
+Introduce una cantidad: -3
+>>> if int(dinero) < 0:
+...     raise Exception('No se pueden introducir cantidades negativas')
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+Exception: No se pueden introducir cantidades negativas
+
+\end{mintedbox}
+Es así de simple. Usa \textit{raise} cuando quieras provocar un error artificialmente
+\section{Archivos en Python}
+Práctica de esta semana: \url{https://colab.research.google.com/drive/1-BC3YmYiKoZ-0y7yRsnAg4rMFqJMkdGr?usp=sharing}
+El manejo de archivos en Python es bastante sencillo. Los pasos que siempre vas a seguir usando un archivo en Python son los siguientes:
+\begin{enumerate}
+    \item Vas a abrir el archivo y guardarlo en un objeto:
+    \begin{mintedbox}{python}
+    >>> f = open('path/to/the/file.txt', 'r')
+    \end{mintedbox}
+    Al abrir el archivo con \textit{open()}, debes especificar dos cosas: la localización del archivo en el directorio, y el modo de apertura del archivo, que puede ser 'r', 'w', 'rb' y 'wb'. Respectivamente, se refieren a \textit{read mode, write mode, read (binary) mode} y \textit{write (binary) mode}
+    \item Dependiendo de si lo has abierto para leer o escribir, leeras o escribirás algo en el archivo.
+    \begin{itemize}
+        \item \textbf{modo lectura}: puedes usar \textit{.readlines()} para obtener una lista con todas las frases del archivo (esto es, todas las expresiones comprendidas entre dos saltos de línea \textbackslash n), o bien usar \textit{.read()} para conseguir todo el \textit{string} del archivo.
+        \item \textbf{modo escritura}: puedes escribir un \textit{string} en el archivo mediante el método \textit{.write()}. Tienes que tener cuidado, ya que este método escribirá por encima de todo lo que hubiese en el archivo.
+        
+    \end{itemize}
+    \item Finalmente, después de haber hecho cosas con el archivo, debes cerrarlo con el siguiente comando:
+    \begin{mintedbox}{python}
+    >>>f.close()
+    \end{mintedbox}
+\end{enumerate}
+\section{Programación Orientada a Objetos}
+Entra a la práctica de la siguiente semana con el siguiente enlace \url{https://colab.research.google.com/drive/1S9SeIKE-DcVCu84ACGlj0pRE1d5f1gmt?usp=sharing}
+\subsection{¿Qué es la POO?}
+La programación orientada a objetos es un de las características más útiles de los lenguajes de programación. Surge del hecho de plasmar en código la abstracción que realizamos todos los días inconscientemente sobre cualquier cosa. Por ejemplo, podemos ver a nuestro perro como algo con un conjunto de atributos (pelo marrón, dos ojos, cuatro patas,...) y de acciones disponibles (ladrar, alegrarse, caminar,...). Con esto, podemos diferenciarlo de otros perros, que poseerán los mismo atributos, sin coincidir en su valor.
+\subsection{El Hola mundo de la POO}
+En las siguientes líneas expondremos el que es el hola mundo de la POO (Programación orientada a objetos). Construiremos una clase con un atributo y un método (que es como se le llama a una acción que puede desempeñar el objeto).
+\newpage
+\begin{mintedbox}{python}
+>> class Saludador():
+...     def __init__(self, valor):
+...         self.valor = valor
+...     def saludar(self):
+...         print('hola mundo')
+...         pass
+...
+>> if __name__ == '__main__':
+...     saludo = Saludador(5)
+...     saludo.saludar()
+hola mundo
+>>print(saludo.valor)
+5
+\end{mintedbox}
+
+\subsection{¿Cómo construir una clase?}
+Para construir una clase, primero tenemos que realizar la abstracción en nuestra cabeza, con el objeto de describir con atributos y método aquello que nos estemos imaginando. Si por ejemplo, necesitamos modelizar una proteína, tendremos que poner de atributos los aminoácidos que la componen, su peso,... y en los métodos tendremos que especificar cómo se comporta (por ejemplo, que pasa cuando interacciona con un enzima). Comenzaremos siempre declarando \textit{class} al principio, seguido del nombre de la clase. Podemos poner unos paréntesis opcionales, que como veremos algo más adelante, nos servirán para el heredamiento de clases. Justo después de esto, colocamos una sangría para indicar que todo lo siguiente pertenece a la clase, iniciaremos el constructor, que lo llamamos \textit{\_\_init\_\_}, con dos barras. Este método es opcional, solamente si quieres iniciar los valores de la instancia desde la creación del mismo. Si no lo colocas, Python lo pondrá por defecto. Luego, deberemos especificar los métodos, que no será más que funciones con el parámetro \textit{self}, añadido a todos. Algo muy útil de los objetos, es que aunque no definas una variable en una función, gracias a \textit{self} es posible acceder a todos los atributos del objeto. La forma de entender \textit{self} es sustituyendo el nombre del objeto por él, de forma que veas que estamos accediendo a los atributos del mismo objeto sobre el que estamos describiendo métodos.
+\subsection{Instanciando objetos}
+Para instanciar un objeto, simplemente tendremos que usar la siguiente sintaxis. Como vimos en el primer ejemplo, había algo por ahí que se llamaba \textit{\_\_init\_\_}. Este es el constructor, y sirve para pasar parámetros a nuestro objeto justo al crearlo.
+\begin{mintedbox}
+ssaludo = Saludador(5)
+\end{mintedbox}
+Si no ponemos nada, ni siquiera el \textit{\_\_init\_\_}, python lo pondrá por defecto.
+
+\subsection{¿Qué es un método?}
+Un método es básicamente una acción que puede desempeñar un objeto en concreto. Son funciones asociadas al objeto, y que pueden usar toda la información que contienen. Es por ello que colocamos un \textit{self} como parámetro inicial, para poder acceder a todos los atributos pertenecientes al objeto.
+
+\subsection{Decoradores}
+Usamos decoradores cuando queremos incluir alguna funcionalidad a un método o función. La sintaxis será básicamente la siguiente:
+\begin{mintedbox}{python}
+>>def incluir_hola(func):
+    func()
+    print('hola')
+    pass
+>>@incluir_hola
+...def suma():
+... return  print(2+2)
+>>suma()
+4
+hola
+\end{mintedbox}
+
+Simplemente, un decorador es una función que añade más cosas a otra función, por ejemplo, llamar a esa función n veces, o llamarla si se cumple cierta condición. Son muy usados programando métodos, porque así tenemos un control más cercano de lo que hacen.
+\subsection{Tipos de método}
+Hay tres tipos de método.
+
+\begin{itemize}
+    \item Métodos de instancia.
+    \item Métodos de clase.
+     \item Métodos estáticos.
+     \item Métodos de sobrecarga
+\end{itemize}
+
+\textbf{Métodos de instancia}: estos métodos son los que llamamos cuando queremos que una instancia de una clase tenga cierta funcionalidad. Véase el siguiente ejemplo:
+\begin{mintedbox}{python}
+>>Class perro:
+...     def ladrar():
+...         print('guau guau')
+...
+>> pomerania = perro()
+>> pomerania.ladrar()
+guau guau
+\end{mintedbox}
+
+Hemos instanciado un objeto de la clase, y sólo entonces hemos llamado a el método desde ese objeto. Pero ¿Y si no necesitamos instanciar un objeto, o directamente no queremos instanciar un objeto para llamar al método? De eso se tratan los siguientes dos tipos de método.
+
+
+\textbf{Métodos de clase}: se caracterizan por referirse a la clase en la que están definidos, sin especificar ningún objeto. Puede afectar a la clase y a sus componentes. Contienen una diferencia clave con respecto a los métodos de instancia, y es que tendremos que poner un decorador para indicar que nos estamos refiriendo a la clase. Por ejemplo:
+\begin{mintedbox}{python}
+>>> class Perro:
+...     patas = 4
+...     @classmethod
+...     def numero_patas(cls):
+...             print(f'el perro tiene {cls.patas} patas')
+...
+>>> Perro.numero_patas()
+el perro tiene 4 patas
+>>>
+\end{mintedbox}
+Gracias a los métodos de clase, tenemos una forma de referirnos a la clase en su conjunto mediante un método.
+
+
+\textbf{Métodos estáticos}: los métodos estáticos surgen por la necesidad de no referirnos a nada en particular. Imagínate que solamente necesitamos una funciona secas, sin \textit{self} ni \textit{cls}. Lo que vamos a hacer entonces es escribir justo encima del método en cuestión @staticmethod. Veamos un ejemplo:
+\begin{mintedbox}{python}
+>>> class cuadrado:
+...     @staticmethod
+...     def area(lado):
+...             return lado*lado
+...
+>>> print(cuadrado.area(5))
+25
+\end{mintedbox}
+Imagínate que quieres hacer un módulo de Python con métodos numéricos que hayas visto. En vez de crear un fichero con todas las funciones, que podría dar lugar a incongruencias entre las funciones existentes, es una buena práctica crear tu propia clase de funciones.
+
+
+\textbf{Métodos de sobrecarga}: los métodos de sobrecarga son aquellos métodos que nos permiten redefinir ciertas operaciones o funciones sobre estos objetos. Por ejemplo, si tienes una clase de vectores, podría interesarte redefinir la suma entre objetos de vectores, para sumarlos componente a componente. Lo siguiente no funciona:
+\begin{mintedbox}{python}
+>>> class Vector:
+...     def __init__(self, x, y):
+...             self.x = x
+...             self.y = y
+... 
+>>> ejex = Vector(1, 0)
+>>> ejey = Vector(0, 1)
+>>> ejex + ejey
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: unsupported operand type(s) for +: 'Vector' and 'Vector'
+>>> 
+
+\end{mintedbox}
+Tenemos que redefinir la operación suma:
+\begin{mintedbox}{python}
+>>> class Vector:
+...     def __init__(self, x, y):
+...             self.x = x
+...             self.y = y
+...     def __add__(self, other):
+...             return Vector(self.x + other.x, self.y + other.y)
+...     def __str__(self):
+...             return 'Vector({0}, {1})'.format(self.x, self.y)
+... 
+>>> ejex = Vector(1, 0)
+>>> ejey = Vector(0, 1)
+>>> print(ejex + ejey)
+Vector(1, 1)
+>>> 
+
+\end{mintedbox}
+El otro método que hemos llamado ha sido \textbf{\_\_str\_\_}. Este método se encarga de redefinir la función print para el objeto, de manera que nos imprima lo que nos interese. En el caso de no usarlo obtendríamos lo siguiente:
+\begin{mintedbox}{python}
+>>> print(ejex + ejey)
+<__main__.Vector object at 0x7fe1b5b537f0>
+
+\end{mintedbox}
+Lo cual no es muy útil. A continuación puedes ver una lista con todos los métodos de sobrecarga que hay (o casi todos)
+\begin{itemize}
+    \item + \hspace{3mm} \_\_add\_\_(self, other)
+    
+    \item- \hspace{3mm}	\_\_sub\_\_(self, other)
+    
+    \item* \hspace{3mm}	\_\_mul\_\_(self, other)
+    
+    \item/ \hspace{3mm}	\_\_truediv\_\_(self, other)
+    
+    \item\% \hspace{3mm} \_\_mod\_\_(self, other)
+    
+    \item $<$ \hspace{3mm}	\_\_lt\_\_(self, other)
+    
+    \item $\leq$	\hspace{3mm} \_\_le\_\_(self, other)
+    
+    \item == \hspace{3mm} \_\_eq\_\_(self, other)
+    
+    \item != \hspace{3mm} \_\_ne\_\_(self, other)
+    
+    \item $>$	\hspace{3mm} \_\_gt\_\_(self, other)
+    
+    
+    \item $>=$ \hspace{3mm} \_\_ge\_\_(self, other)
+    
+\end{itemize}
+\subsection{Herencia entre clases}
+Accede a la práctica de esta semana por el siguiente enlace: \url{https://colab.research.google.com/drive/1lgejnoyEEYzbIxQlMj35LGeRb5TOQMSH?usp=sharing}
+En algún programa, nos puede interesar crear clases generales, e ir concretando y dividiéndolas más. Este es el caso por ejemplo de querer expresar la clase estudiante con la de profesores. Imaginemos que quieres crear un programa, con datos de las personas de una universidad. Vas a necesitar sus nombres, apellidos, número de identificación... Sin embargo, hay ciertas cosas muy concretas para incluirlas. Como es el caso de los profesores, podrías querer guardar la oficina en la que se encuentran ¿Que podrías hacer?
+
+
+La solución a este problema es el heredamiento entre clases. Creamos una clase con los atributos y métodos que comparten todas las clases: Nombre, apellidos, id, edad... Y luego \textit{heredamos} de ella los atributos y métodos correspondientes. De esta forma, en la clase Profesor tendremos aulas, oficina, página web... y en de Estudiante las asignaturas que tienen, sus notas...
+
+Veamos el programa para representar esto:
+\newpage
+\begin{mintedbox}{python}
+>>> class Persona:
+...     def __init__(self, nombre, apellidos, edad):
+...             self.nombre = nombre
+...             self.apellidos = apellidos
+...             self.edad = edad
+...     def saludar(self):
+...             print(f'Hola, mi nombre es {self.nombre} {self.apellidos}')
+...
+>>> class Estudiante(Persona):
+...     def __init__(self, nombre, apellidos, edad, asignaturas):
+...             Persona.__init__(self, nombre, apellidos, edad)
+...             self.asignaturas = asignaturas
+...     def listar_asignaturas(self):
+...             for asignatura in self.asignaturas:
+...                     print(asignatura)
+...
+>>> class Profesor(Persona):
+...     def __init__(self, nombre, apellidos, edad, oficina):
+...             Persona.__init__(self, nombre, apellidos, edad)
+...             self.oficina = oficina
+...     def decir_oficina(self):
+...             print(f'la oficina de {self.nombre} {self.apellidos} está en {self.oficina}')
+...
+>>> estudiante1 = Estudiante('Javier', 'Martínez Campos', 19, ['Finanzas', 'Cálculo', 'Programación'])
+>>> estudiante1.saludar()
+Hola, mi nombre es Javier Martínez Campos
+>>> estudiante1.listar_asignaturas()
+Finanzas
+Cálculo
+Programación
+>>> profesor1 = Profesor('Miguel', 'Díaz Pérez', 33, 'C/Einstein módulo 40 505')
+>>> profesor1.saludar()
+Hola, mi nombre es Miguel Díaz Pérez
+>>> profesor1.decir_oficina()
+la oficina de Miguel Díaz Pérez está en C/Einstein módulo 40 505
+\end{mintedbox}
+\subsection{Clases abstractas}
+A pesar del nombre, este tipo de clases no tienen ningún misterio. Lo único que hacen es construir una estructura y forzarla para las clases que la hereden: en pocas palabras, sirven para forzar la definición de ciertos atributos. Aquí tienes un ejemplo:
+\begin{mintedbox}{python}
+>>from abc import ABC, abstractmethod
+>>class Perro(ABC):
+...  @abstractmethod
+...  def ladrar(self):
+...        pass
+\end{mintedbox}
+Es tan simple como eso. Ahora, ten cuidado cuando las uses, porque cuando no definas un método de una clase que herede de una clase abstracta te saltará un error. Y no, no puedes definir cosas en la clase abstracta.
+\section{Expresiones regulares (RegEx)}
+Entra a la práctica de esta semana por esta url: \url{}
+RegEx es una librería indispensable en el caso de que necesites trabajar con strings. Ya sea buscando palabras en un documento, como sustituyendo ciertas palabras por otras, RegEx permite realizar múltiples tareas con strings de forma rápida y eficaz ¡No tienes ni idea la de tiempo que vas a salvar usando esta librería!
+
+
+Vamos a ver por encima RegEx. Luego, para un programa concreto que necesites algo más específico, puedes mirar la documentación por aquí: \url{https://docs.python.org/3/howto/regex.html} (También puedes simplemente copiar y pegar el error en el buscador, que es al final lo que se hace en la práctica).
+
+Empezamos con un sencillo ejemplo de búsqueda de una palabra determinada:
+
+\begin{mintedbox}{python}
+txt = "Me gusta aprender el lenguaje de programación Python"
+x = re.search("Python", txt) 
+\end{mintedbox}
+
+Vamos a desmontar paso por paso el anterior código:
+
+
+En la primera línea, tenemos una declaración de una variable \textit{string}. Nada fuera de lo común.
+
+
+En la segunda, usamos la función \textit{re.search} para buscar un patrón de texto concreto en el texto que introduzcamos. En este caso, el patrón se trata de ``Python a secas''. Solamente queremos encontrar Python. Hasta ahora, nada raro ¿Verdad?
+
+
+La potencia de RegEx surge con las palabras clave que podemos usar en los patrones. Por ejemplo ¿que pasa si queremos encontrar un número de teléfono?
+
+
+Podemos disponer una solución, como la siguiente:
+
+\begin{mintedbox}{python}
+>>> re.findall("\d", txt)
+['3', '4', '1', '1', '1', '1', '1', '1', '1', '1', '1']
+>>> txt = "Mi número de teléfono es +34 111111111"
+>>> re.findall("\d", txt)
+['3', '4', '1', '1', '1', '1', '1', '1', '1', '1', '1']
+>>>
+\end{mintedbox}
+
+De paso puedes ver que la palabra clave para encontrar un número cualquiera es d. Lo que hace el comando \textit{findall} es devolver una lista con todas las coincidencias que haya en el texto con el patrón. Sin embargo, esta forma de buscar números no es muy óptima, ya que podríamos encontrarnos con el siguiente problema:
+\begin{mintedbox}{python}
+>>> txt = "Mi número es +34 123122222, y vivo en la calle número 2"
+>>> re.findall("\d", txt)
+['3', '4', '1', '2', '3', '1', '2', '2', '2', '2', '2', '2']
+>>>
+\end{mintedbox}
+
+Como puedes comprobar, el programa ha fallado en discernir entre el número real y el número de la calle. Lo que podemos hacer es exigir que sean todos seguidos, o por lo menos sean 8.
+
+\begin{mintedbox}{python}
+>>> re.findall("\d{9}", txt)
+['123122222']
+>>>
+\end{mintedbox}
+
+Ahora el programa ha tenido éxito. Lo que hemos hecho es decir cuántos número seguidos estábamos buscando (en este caso 9, los del número de teléfono).
+
+
+Imaginemos que queremos extraer todos los números de un archivo, en una lista. Lo que necesitamos hacer es lo mismo que antes, pero no conocemos su longitud. Para ello, usaremos una nueva señal.
+
+\begin{mintedbox}{python}
+>>> txt
+'Está ubicado en el extremo noroeste de las Antillas, limitando al norte con el océano Atlántico a 793 km del Triángulo de las Bermudas, que lo separa de Estados Unidos y Bahamas, al este con el Paso de los Vientos, que lo separa de Haití, al sur con el mar Caribe y al noroeste con el golfo de México. Con 11 193 470 habitantes en 2019 es el segundo país más poblado de las Antillas, después de Haití, con 109 884 km², el más extenso, y con 101,9 hab./km², el tercero menos densamente poblado, por detrás de Dominica y Bahamas. Junto a La Española, Jamaica y Puerto Rico, es una de las cuatro Antillas Mayores y la mayor isla de la región. '
+>>> re.findall('\d+', txt)
+['793', '11', '193', '470', '2019', '109', '884', '101', '9']
+\end{mintedbox}
+Como ves, no nos ha servido de mucho, ya que los espacios y comas entre número son parte del número. Las expresiones regulares pueden ser algo complejas a veces, y es necesario mirar con detenimiento la documentación. Puedes encontrar la información que necesitas buscando en la web, o en la página oficial: \url{https://docs.python.org/3/library/re.html}
+
+Veamos por encima que hace cada símbolo en el patrón:
+
+\begin{itemize}
+    \item * repite 0 o más veces lo anterior
+    \item + repite 1 o más veces lo anterior
+     \item ? repite 1 o 0 veces lo anterior
+     \item {n} repite n veces lo anterior
+     \item {n, m} repite de n a m veces lo anterior
+     \item {n,} repite más de n veces lo anterior
+     \item {,n} repite menos de n veces lo anterior
+\end{itemize}
+
+Eso en cuanto a las repeticiones. Luego podemos concretar más la búsqueda mediante corchetes:
+
+\begin{itemize}
+    \item [0-9] busca cualquier número del 0 al 9
+    \item [a-z] busca cualquier letra de la a a la z
+    \item [abc] busca a, b o c
+    \item [\^abc] busca cualquier carácter que no sea a, b, o c
+\end{itemize}
+También existen una serie de letras clave:
+
+\begin{itemize}
+    \item d busca un número.
+    \item w busca un carácter alphanumérico.
+    \item s busca un espacio en blanco.
+\end{itemize}
+
+Con esto ya tienes una idea de lo que RegEx puede realizar.
+
+
+\section{Librerías importantes de Python}
+Python es un lenguaje con muchos programadores, y tiene una comunidad muy amplia y buena que genera contenido y mantiene el código. Cuando un alguien crea código de Python, o en C, o cualquier otro, podemos usarlo mediante las librerías. Una librería es básicamente una forma de aprovechar de forma sencilla todas las horas que han dedicado otros programadores a desarrollar un código, para que a nosotros nos sea más sencillo.
+
+
+\subsection{Cómo importar librerías y paquetes en Python}
+Para empezar, si no instalamos los paquetes necesarios, nos saldrá un error, donde Python nos avisará de que no encuentra el paquete correspondiente. Para ello, es tan sencillo como esto (Atención que ahora estamos en la consola de comandos)
+\begin{mintedbox}{python}
+    ~/:pip install ******
+    Installing...
+\end{mintedbox}
+¡Prueba a instalar numpy! Solamente tienes que poner en la consola de comandos \textit{pip install numpy}. Es posible que te dé un error por no tener pip actualizado, para lo que basta \textit{python3 -m pip install --upgrade pip}. Si sigue dando error, escribe a cdi.asociacion@ciencias.uam.es y nosotros intentaremos ayudarte.
+
+\subsection{NumPy}
+Numerical Python, o numpy para los amigos, es la librería por excelencia para el álgebra lineal (no porque integre el mayor número de funcionalidades, si no porque es muyyy rápida). Está escrita usando C, por lo que es realmente rápido multiplicar matrices con ella (el código en C puede llegar a ser 100 veces más rapido que en Python, osea, la diferencia de esperar 5 minutos a casi 8 horas). Algunos comandos de numpy son los siguientes:
+
+\begin{mintedbox}{python}
+>> a = [1, 2, 3]
+>> a_np = np.array(a)
+>> a_np
+np.array([1, 2, 3])
+\end{mintedbox}
+
+\begin{mintedbox}{python}
+>> a = [1, 2, 3]
+>> a_np = np.array(a)
+>> a_np
+np.array([1, 2, 3])
+\end{mintedbox}
+
+Podemos definir una matriz, y definir sus dimensiones:
+\newpage
+\begin{mintedbox}{python}
+>> a = np.array([[1, 2],[2, 4], [2, 3]])
+>> a_new = a.reshape(2, 3)
+array([[1, 2, 2],
+       [4, 2, 3]])
+\end{mintedbox}
+Como ves, hemos convertido un array que era 3x2 y lo hemos convertido en uno 2x3. Para ver el número de filas y columnas (también en dimensiones superiores) puedes usar el comando \textit{array.shape}, que devolverá una tupla con esta información. Podemos generar arrays aleatorios también con Numpy, usando el módulo numpy.random:
+\begin{mintedbox}{python}
+>> a = np.random.randn(10, 2)
+>> a
+array([[-1.91998825, -1.24475919],
+       [-1.3619551 ,  0.55625241],
+       [-0.96389224,  0.39464091],
+       [-0.55543779,  0.09788448],
+       [-2.45474156,  1.46708556],
+       [ 1.21782658,  0.19510436],
+       [ 1.09703256,  0.18065523],
+       [-1.23580015,  1.93093648],
+       [-0.58300698, -0.45686347],
+       [-0.22974308,  1.39446707]])
+>> a.shape
+(10, 2)
+\end{mintedbox}
+\subsection{Pandas}
+Pandas es un paquete de Python muy usado en la ciencia de datos. La razón de ser de Pandas es la necesidad de tener una forma de limpiar y transformar grandes cantidades de datos de una forma económica y eficiente (Como los objetos de pandas corren encima de numpy arrays, es bastante rápido). Si vas a usar datos con Python, es muy recomendable que sepas lo básico de Pandas, ya que es una herramienta muy versátil y poderosa en este sentido. Comenzamos creando un pd.DataFrame básico.Podemos construirlo a partir de:
+
+\begin{enumerate}
+    \item lista
+    \item diccionario
+    \item numpy array
+\end{enumerate}
+
+Los principales parámetros para construir un DataFrame son los índices y las columnas (básicamente, las filas y las columnas). Los pasaremos en las construcciones como \textit{index} y \textit{column}. Sus valores por defecto son las listas de 0 a n-1, donde n-1 es la longitud de la dimensión.
+
+Finalmente, podemos visualizar el Dataframe construido mediante el atributo \textit{.head()}
+\begin{mintedbox}{python}
+>>import pandas as pd
+>> a = np.array([[1, 2],
+       [3, 2],
+       [1, 2],
+       [1, 1]])
+>> df = pd.DataFrame(a, index=['uno', 'dos', 'tres', 'cuatro'], columns = ['A', 'B', 'C', 'D'])
+>> df.head()
+        A  B
+uno     1  2
+dos     3  2
+tres    1  2
+cuatro  1  1
+
+\end{mintedbox}
+Así como podemos visualizar las \textbf{n} primeras filas mediante la función \textit{.head(n)}, podemos ver las \textit{n} últimas mediante la función \textit{.tail(n)}
+\begin{mintedbox}{python}
+>>df.tail(2)
+        A  B
+tres    1  2
+cuatro  1  1
+\end{mintedbox}
+Podemos sacar tanto la media, como la suma y la desviación típica de filas o columnas mediante las funciones \textit{.mean(), .sum(), .std()}
+\begin{mintedbox}{python}
+>>> df.mean(axis = 1)
+tres      1.5
+cuatro    1.0
+dtype: float64
+>>> df.mean(axis = 0)
+A    1.0
+B    1.5
+dtype: float64
+>>> df.sum(axis = 1)
+tres      3
+cuatro    2
+dtype: int64
+>>>
+\end{mintedbox}
+
+\subsection{Matplotlib}
+Matplotlib es una librería para dibujar gráficos, histogramas, tartas de porcentajes... Es muy útil para visualizar cosas. Para lo que queremos, solamente usaremos el módulo pyplot, pero hay más. Aquí está la página web, donde puedes acceder a toda la documentación: \url{https://matplotlib.org/}.
+
+
+Supongamos que tenemos dos vectores de igual longitud, y queremos representar los pares de puntos en el plano. Entonces bastará con el siguiente código para conseguirlo:
+\begin{mintedbox}{python}
+>>import matplotlib.pyplot as plt
+>> x = [1, 2, 3, 4, 5, 7, 9]
+>> y = [2, 1, 4, 2, 5, 3, 6]
+>> plt.plot(x, y)
+>> plt.show()
+\end{mintedbox}
+Lo que resultará en el siguiente dibujo:
+\begin{center}
+\includegraphics[scale = 0.5]{pyplot1.png}
+\end{center}
+Si queremos que python no trace automáticamente estas líneas, solamente tenemos que especificarlo en \textit{plt.plot}. Podemos usar \textit{x, o, *} para especificar la forma de los puntos, algo útil cuando tienes varias clases:
+\begin{mintedbox}{python}
+>>import matplotlib.pyplot as plt
+>> x = [1, 2, 3, 4, 5, 7, 9]
+>> y = [2, 1, 4, 2, 5, 3, 6]
+>> plt.plot(x, y, 'x')
+>> plt.show()
+\end{mintedbox}
+Lo que resultará en el siguiente dibujo:
+\begin{center}
+\includegraphics[scale = 0.5]{pyplot2.png}
+\end{center}
+\subsection{Librerías avanzadas de Python y frameworks}
+Esta sección va a consistir en describir los componentes básicos de las librerías/frameworks más importantes de Python:
+
+\begin{itemize}
+    \item SciPy \begin{itemize}
+        \item \url{https://www.scipy.org/}
+        \item Construido sobre NumPy arrays, es muy rápido
+        \item Contiene prácticamente cualquier cosa sobre cálculo numérico
+    \end{itemize}
+    \item Keras \begin{itemize}
+        \item \url{https://keras.io/}
+        \item Construido encima de Tensorflow (tensorflow.keras)
+        \item Sirve para construir modelos sencillos de deep learning rápidamente
+        \item Permite una gran customización
+    \end{itemize}
+    \item Tensorflow \begin{itemize}
+        \item \url{https://www.tensorflow.org/}
+        \item Desarrollado por Google
+        \item Permite operar con grafos computacionales de forma optimizada
+        \item Escrito en C++
+    \end{itemize}
+    \item Scikit-learn \begin{itemize}
+        \item \url{https://scikit-learn.org/stable/}
+        \item Construido sobre Scipy, contiene muchos algoritmos populares para el aprendizaje automático
+        \item Muy popular en ciencia de datos
+    \end{itemize}
+    \item Wireshark \begin{itemize}
+        \item \url{https://www.wireshark.org/}
+        \item Framework usado en el análisis de redes
+    \end{itemize}
+
+\end{itemize}
+
+*\textit{Framework es un ``marco de trabajo'' que posee muchas clases y funciones útiles para una tarea concreta. Por ejemplo, Tensorflow es un framework de Inteligencia artificial, y Wireshark es un framework usado en el Hacking}
+\section{Anexo}
+\subsection{Cómo escribir documentación}
+Existen dos formas principales para escribir documentación en un programa:
+\begin{itemize}
+    \item \textbf{Comentarios}: puedes comentar una línea, de manera que no sea ejecutada, usando la almohadilla, \#
+    \item \textbf{.\_\_doc\_\_}: Inmediatamente después de crear un objeto o función, puedes colocar un \textit{string} con tres comillas al que se podrá acceder escribiendo:
+    \begin{mintedbox}{python}
+    >>><función/objeto>.__doc__()
+    \end{mintedbox}
+\end{itemize}
+\section{Conclusión}
+Con todo este conocimiento, ya puedes añadirlo a tu currículum, y estar satisfecho/a de tener una base sólida de Python. Te damos la enhorabuena, y nuestros más sinceros elogios, por haber estudiado este curso. Te agradecemos también que te hayas tomado el tiempo para realizar todos los Google colab, aunque te haya costado en alguna parte ¡Enhorabuena!
+\end{document}
+
+
